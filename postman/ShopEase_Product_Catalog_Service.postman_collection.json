@@ -1,0 +1,616 @@
+{
+  "info": {
+    "name": "ShopEase Product Catalog Service",
+    "description": "Product, category and inventory APIs. Login/register remain in the ShopEase Authentication Service. Set base_url, access_token (customer), and admin_token (admin) variables.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8005"
+    },
+    {
+      "key": "access_token",
+      "value": "PASTE_CUSTOMER_ACCESS_TOKEN"
+    },
+    {
+      "key": "admin_token",
+      "value": "PASTE_ADMIN_ACCESS_TOKEN"
+    }
+  ],
+  "item": [
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/categories/",
+            "description": "Create Category",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Electronics\",\n  \"description\": \"Electronic products\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/categories/",
+            "description": "List Categories",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/categories/1",
+            "description": "Get Category",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/categories/1",
+            "description": "Update Category",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Electronics\",\n  \"description\": \"Updated category\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Category (only when empty)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/api/categories/1",
+            "description": "Delete Category (only when empty)",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/products/",
+            "description": "Create Product",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_id\": 1,\n  \"name\": \"Android Mobile\",\n  \"description\": \"Test handset\",\n  \"sku\": \"MOB-001\",\n  \"price\": \"25000.00\",\n  \"discount_price\": \"23000.00\",\n  \"stock_quantity\": 10,\n  \"brand\": \"ShopEase\",\n  \"image_url\": null,\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List Products with Search and Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/products/?search=mobile&category_id=1&min_price=1000&max_price=50000&available=true&page=1&page_size=10&sort_by=price&sort_order=asc",
+            "description": "List Products with Search and Filters",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/products/1",
+            "description": "Get Product",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Replace Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/products/1",
+            "description": "Replace Product",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_id\": 1,\n  \"name\": \"Android Mobile\",\n  \"description\": \"Test handset\",\n  \"sku\": \"MOB-001\",\n  \"price\": \"25000.00\",\n  \"discount_price\": \"23000.00\",\n  \"stock_quantity\": 10,\n  \"brand\": \"ShopEase\",\n  \"image_url\": null,\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Patch Product",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/products/1",
+            "description": "Patch Product",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand\": \"ShopEase Updated\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/api/products/1",
+            "description": "Delete Product",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "item": [
+        {
+          "name": "Get Stock",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/inventory/1",
+            "description": "Get Stock",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Stock In",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/inventory/1/stock-in",
+            "description": "Stock In",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 5,\n  \"remarks\": \"Postman restock\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Stock Out",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/inventory/1/stock-out",
+            "description": "Stock Out",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 2,\n  \"remarks\": \"Postman sale\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Inventory History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/inventory/1/history",
+            "description": "Inventory History",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Low Stock",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/inventory/low-stock?threshold=5",
+            "description": "Low Stock",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP response received', function () { pm.expect(pm.response.code).to.be.oneOf([200,201,204,400,401,403,404,409,422]); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
