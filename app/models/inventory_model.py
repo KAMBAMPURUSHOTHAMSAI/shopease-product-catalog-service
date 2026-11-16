@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import DateTime, ForeignKey, Integer, String, CheckConstraint, func
+from sqlalchemy import DateTime, ForeignKey, Integer, String, CheckConstraint, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.connection import Base
 
@@ -9,6 +9,7 @@ class InventoryTransaction(Base):
         CheckConstraint("quantity > 0", name="ck_inventory_quantity_positive"),
         CheckConstraint("transaction_type IN ('IN', 'OUT')", name="ck_inventory_type_valid"),
         CheckConstraint("previous_stock >= 0 AND updated_stock >= 0", name="ck_inventory_stock_nonnegative"),
+        UniqueConstraint("idempotency_key", name="uq_inventory_transactions_idempotency_key"),
     )
     id: Mapped[int] = mapped_column(primary_key=True)
     product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="RESTRICT"), index=True, nullable=False)
@@ -17,5 +18,6 @@ class InventoryTransaction(Base):
     previous_stock: Mapped[int] = mapped_column(Integer, nullable=False)
     updated_stock: Mapped[int] = mapped_column(Integer, nullable=False)
     remarks: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    idempotency_key: Mapped[str | None] = mapped_column(String(128), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), nullable=False)
     product: Mapped["Product"] = relationship(back_populates="inventory_transactions")
